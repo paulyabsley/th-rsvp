@@ -1,6 +1,39 @@
 const form = document.getElementById('registrar');
 const input = form.querySelector('input');
+const mainDiv = document.querySelector('.main');
 const ul = document.getElementById('invitedList');
+
+const div = document.createElement('div');
+const filterLabel = document.createElement('label');
+const filterCheckbox = document.createElement('input');
+
+filterLabel.textContent = "Hide those who haven't responded";
+filterCheckbox.type = 'checkbox';
+filterCheckbox.setAttribute('id', 'hide');
+filterLabel.htmlFor = filterCheckbox.id;
+div.appendChild(filterLabel);
+div.appendChild(filterCheckbox);
+mainDiv.insertBefore(div, ul);
+
+filterCheckbox.addEventListener('change', (e) => {
+	const isChecked = e.target.checked;
+	const lis = ul.children;
+	if (isChecked) {
+		for (let i = 0; i < lis.length; i += 1) {
+			let li = lis[i];
+			if (li.className === 'responded') {
+				li.style.display = '';
+			} else {
+				li.style.display = 'none';
+			}
+		}
+	} else {
+		for (let i = 0; i < lis.length; i += 1) {
+			let li = lis[i];
+			li.style.display = '';
+		}
+	}
+});
 
 // Creating new list items
 createLi = function(text) {
@@ -50,7 +83,6 @@ ul.addEventListener('click', (e) => {
 		const button = e.target;
 		const li = button.parentNode;
 		const ul = li.parentNode;
-
 		if (button.textContent === 'Remove') {
 			ul.removeChild(li);
 		} else if (button.textContent === 'Edit') {
